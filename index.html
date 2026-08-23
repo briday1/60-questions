@@ -214,7 +214,7 @@
 
 <div id="progress-wrap">
   <div id="progress-bar-track"><div id="progress-bar-fill"></div></div>
-  <span id="progress-label">0 / 62</span>
+  <span id="progress-label">— / —</span>
 </div>
 
 <main>
@@ -486,9 +486,9 @@ function goTo(index) {
 }
 
 function updateProgress() {
-  const pct = Math.round((currentIndex / TOTAL) * 100);
+  const pct = Math.round(((currentIndex + 1) / TOTAL) * 100);
   document.getElementById('progress-bar-fill').style.width = pct + '%';
-  document.getElementById('progress-label').textContent = `${currentIndex} / ${TOTAL}`;
+  document.getElementById('progress-label').textContent = `${currentIndex + 1} / ${TOTAL}`;
 }
 
 // ─────────────────────────────────────────────
