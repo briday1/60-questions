@@ -194,7 +194,7 @@
     <div id="summary-body"></div>
   </div>
   <div class="print-btn-row" id="print-btn-row" style="display:none;">
-    <button class="btn-success" onclick="window.print()">🖨 Save / Print as PDF</button>
+    <button class="btn-success" onclick="window.print()">Save / Print as PDF</button>
     <button class="btn-secondary" onclick="restartApp()" style="margin-left:1rem;">Start Over</button>
   </div>
 
@@ -394,7 +394,7 @@ function buildQuestions() {
         ${i > 0 ? `<button class="btn-secondary" onclick="goTo(${i-1})">← Back</button>` : '<span></span>'}
         ${i < TOTAL - 1
           ? `<button class="btn-primary" onclick="goTo(${i+1})">Next →</button>`
-          : `<button class="btn-success" onclick="showSummary()">Finish & See Summary ✓</button>`}
+          : `<button class="btn-success" onclick="showSummary()">Finish & See Summary</button>`}
       </div>
     `;
     container.appendChild(card);
