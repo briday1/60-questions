@@ -10,199 +10,216 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Georgia', serif;
-      background: #1a1a2e;
-      color: #e0e0e0;
+      background: #f4f4f0;
+      color: #1a1a1a;
       min-height: 100vh;
     }
 
     /* ── Header ── */
     header {
-      background: linear-gradient(135deg, #16213e 0%, #0f3460 100%);
-      padding: 2rem 1.5rem 1.5rem;
+      background: #2c2c2c;
+      padding: 1.2rem 1.5rem 1rem;
       text-align: center;
-      border-bottom: 3px solid #e94560;
+      border-bottom: 3px solid #5a7a9a;
     }
     header h1 {
-      font-size: 2.2rem;
-      color: #f5f5f5;
-      letter-spacing: 2px;
+      font-size: 1.6rem;
+      color: #f5f5f0;
+      letter-spacing: 1px;
     }
     header p.subtitle {
-      margin-top: .5rem;
-      color: #a0a0c0;
-      font-size: .95rem;
+      margin-top: .3rem;
+      color: #c8c8b8;
+      font-size: .9rem;
     }
     header p.credit {
-      margin-top: .5rem;
-      font-size: .8rem;
-      color: #e9456088;
+      margin-top: .3rem;
+      font-size: .75rem;
+      color: #999;
     }
 
     /* ── Progress bar ── */
     #progress-wrap {
-      background: #0f3460;
-      padding: .6rem 1.5rem;
+      background: #ddd;
+      padding: .5rem 1.5rem;
       display: flex;
       align-items: center;
       gap: 1rem;
     }
     #progress-bar-track {
       flex: 1;
-      height: 8px;
-      background: #16213e;
+      height: 6px;
+      background: #bbb;
       border-radius: 4px;
       overflow: hidden;
     }
     #progress-bar-fill {
       height: 100%;
-      background: #e94560;
+      background: #5a7a9a;
       border-radius: 4px;
       transition: width .3s ease;
       width: 0%;
     }
-    #progress-label { color: #a0a0c0; font-size: .85rem; white-space: nowrap; }
+    #progress-label { color: #555; font-size: .82rem; white-space: nowrap; }
 
     /* ── Main container ── */
-    main { max-width: 780px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+    main { max-width: 760px; margin: 0 auto; padding: 1.5rem 1.5rem 3rem; }
 
     /* ── Question card ── */
     .q-card {
-      background: #16213e;
-      border: 1px solid #0f3460;
-      border-radius: 12px;
-      padding: 2rem 2.2rem;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 1.4rem 1.8rem;
       display: none;
     }
     .q-card.active { display: block; }
     .q-num {
-      font-size: .78rem;
-      letter-spacing: 3px;
+      font-size: .75rem;
+      letter-spacing: 2px;
       text-transform: uppercase;
-      color: #e94560;
-      margin-bottom: .4rem;
+      color: #5a7a9a;
+      margin-bottom: .3rem;
     }
     .q-text {
-      font-size: 1.25rem;
-      color: #f0f0f0;
-      margin-bottom: .5rem;
+      font-size: 1.05rem;
+      color: #111;
+      margin-bottom: .3rem;
       line-height: 1.4;
     }
     .q-hint {
-      font-size: .85rem;
-      color: #8080a0;
-      margin-bottom: 1.2rem;
+      font-size: .82rem;
+      color: #666;
+      margin-bottom: .8rem;
       font-style: italic;
     }
     textarea, input[type="text"] {
       width: 100%;
-      background: #0f3460;
-      border: 1px solid #2a3a6e;
-      border-radius: 8px;
-      color: #e0e0f0;
+      background: #fff;
+      border: 1px solid #aaa;
+      border-radius: 6px;
+      color: #111;
       font-family: inherit;
-      font-size: 1rem;
-      padding: .8rem 1rem;
-      resize: vertical;
+      font-size: .95rem;
+      padding: .45rem .75rem;
       transition: border-color .2s;
     }
     textarea:focus, input[type="text"]:focus {
       outline: none;
-      border-color: #e94560;
+      border-color: #5a7a9a;
     }
-    textarea { min-height: 120px; }
+    textarea { resize: vertical; min-height: unset; }
 
     /* ── Navigation ── */
     .nav-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-top: 1.5rem;
+      margin-top: 1rem;
       gap: 1rem;
     }
     button {
       cursor: pointer;
       border: none;
-      border-radius: 8px;
-      padding: .7rem 1.8rem;
-      font-size: 1rem;
+      border-radius: 6px;
+      padding: .5rem 1.4rem;
+      font-size: .9rem;
       font-family: inherit;
       transition: background .2s, transform .1s;
     }
     button:active { transform: scale(.97); }
-    .btn-primary { background: #e94560; color: #fff; }
-    .btn-primary:hover { background: #c73652; }
-    .btn-secondary { background: #0f3460; color: #a0a0c0; }
-    .btn-secondary:hover { background: #16213e; color: #e0e0e0; }
-    .btn-success { background: #27ae60; color: #fff; }
-    .btn-success:hover { background: #1e8449; }
+    .btn-primary { background: #5a7a9a; color: #fff; }
+    .btn-primary:hover { background: #4a6a8a; }
+    .btn-secondary { background: #ddd; color: #444; }
+    .btn-secondary:hover { background: #ccc; color: #222; }
+    .btn-success { background: #3a7a50; color: #fff; }
+    .btn-success:hover { background: #2d6040; }
 
     /* ── Summary page ── */
     #summary-page {
       display: none;
       background: #fff;
       color: #111;
-      padding: 3rem 3.5rem;
-      border-radius: 12px;
-      margin-top: 2rem;
+      padding: 2rem 2.5rem;
+      border-radius: 8px;
+      margin-top: 1.5rem;
+      border: 1px solid #ccc;
     }
     #summary-page h2 {
-      font-size: 2rem;
+      font-size: 1.4rem;
       text-align: center;
-      border-bottom: 3px solid #e94560;
-      padding-bottom: .8rem;
-      margin-bottom: 1.5rem;
-      color: #1a1a2e;
+      border-bottom: 2px solid #5a7a9a;
+      padding-bottom: .6rem;
+      margin-bottom: 1rem;
+      color: #1a1a1a;
     }
     #summary-page .meta {
       text-align: center;
-      font-size: .85rem;
+      font-size: .82rem;
       color: #555;
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
     }
-    .summary-section { margin-bottom: 2rem; }
+    .summary-section { margin-bottom: 1.4rem; }
     .summary-section h3 {
-      font-size: 1rem;
+      font-size: .82rem;
       letter-spacing: 2px;
       text-transform: uppercase;
-      color: #e94560;
-      border-bottom: 1px solid #e9456033;
-      padding-bottom: .3rem;
-      margin-bottom: 1rem;
+      color: #5a7a9a;
+      border-bottom: 1px solid #ccc;
+      padding-bottom: .25rem;
+      margin-bottom: .7rem;
     }
-    .summary-row { margin-bottom: .8rem; }
-    .summary-row .sq { font-weight: bold; color: #333; font-size: .9rem; }
-    .summary-row .sa { color: #222; font-size: .95rem; white-space: pre-wrap; }
+    .summary-row { margin-bottom: .5rem; }
+    .summary-row .sq { font-weight: bold; color: #222; font-size: .85rem; }
+    .summary-row .sa { color: #333; font-size: .9rem; white-space: pre-wrap; }
     .summary-credit {
-      margin-top: 3rem;
-      padding-top: 1rem;
-      border-top: 1px solid #ccc;
-      font-size: .78rem;
-      color: #777;
+      margin-top: 2rem;
+      padding-top: .8rem;
+      border-top: 1px solid #ddd;
+      font-size: .72rem;
+      color: #888;
       text-align: center;
       line-height: 1.7;
     }
     .print-btn-row {
       text-align: center;
-      margin-top: 1.5rem;
-    }
-    @media print {
-      body { background: #fff; }
-      header, #progress-wrap, main > *:not(#summary-page), .print-btn-row { display: none !important; }
-      #summary-page { display: block !important; border-radius: 0; box-shadow: none; margin: 0; }
+      margin-top: 1rem;
     }
 
     /* ── Intro screen ── */
     #intro-page {
-      background: #16213e;
-      border: 1px solid #0f3460;
-      border-radius: 12px;
-      padding: 2.5rem;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 2rem;
       text-align: center;
     }
-    #intro-page h2 { color: #e94560; font-size: 1.8rem; margin-bottom: 1rem; }
-    #intro-page p { color: #c0c0d8; line-height: 1.7; margin-bottom: 1rem; }
-    #intro-page .name-row { margin: 1.5rem 0; text-align: left; }
-    #intro-page label { display: block; color: #a0a0c0; margin-bottom: .4rem; font-size: .9rem; }
+    #intro-page h2 { color: #2c2c2c; font-size: 1.4rem; margin-bottom: .8rem; }
+    #intro-page p { color: #333; line-height: 1.7; margin-bottom: .8rem; }
+    #intro-page .name-row { margin: 1rem 0; text-align: left; }
+    #intro-page label { display: block; color: #555; margin-bottom: .3rem; font-size: .9rem; }
+
+    /* ── Print / PDF ── */
+    @media print {
+      body { background: #fff; font-size: 10pt; }
+      header, #progress-wrap, main > *:not(#summary-page), .print-btn-row { display: none !important; }
+      #summary-page {
+        display: block !important;
+        border: none;
+        border-radius: 0;
+        box-shadow: none;
+        margin: 0;
+        padding: 0;
+      }
+      #summary-page h2 { font-size: 14pt; margin-bottom: .5rem; }
+      #summary-page .meta { font-size: 9pt; margin-bottom: .8rem; }
+      .summary-section { margin-bottom: .8rem; page-break-inside: avoid; }
+      .summary-section h3 { font-size: 8pt; margin-bottom: .3rem; }
+      .summary-row { margin-bottom: .25rem; }
+      .summary-row .sq { font-size: 8pt; }
+      .summary-row .sa { font-size: 9pt; }
+      .summary-credit { font-size: 7pt; margin-top: 1rem; }
+    }
   </style>
 </head>
 <body>
@@ -210,7 +227,7 @@
 <header>
   <h1>60+ Questions</h1>
   <p class="subtitle">A Busy Actor's Guide for Building Characters</p>
-  <p class="credit">Copyright © 2009 by Sy Richardson &nbsp;|&nbsp; Used for educational reference</p>
+  <p class="credit">Based on <em>60+ Questions</em> © 1989 &amp; 2009 Sy Richardson — Not an official product; cited for educational reference.</p>
 </header>
 
 <div id="progress-wrap">
@@ -258,8 +275,9 @@
     <div id="summary-body"></div>
     <div class="summary-credit">
       Character created using <em>60+ Questions — A Busy Actor's Guide for Building Characters</em><br/>
-      Copyright © 2009 by Sy Richardson &nbsp;|&nbsp; Copyright © 1989 by Sy Richardson<br/>
-      Feed My Sheep Publishing &nbsp;|&nbsp; <a href="http://www.syrichardson.com">www.syrichardson.com</a>
+      © 1989 &amp; 2009 Sy Richardson &nbsp;|&nbsp; Feed My Sheep Publishing &nbsp;|&nbsp; <a href="http://www.syrichardson.com">www.syrichardson.com</a><br/>
+      <em>This tool is not a product of, endorsed by, or affiliated with Sy Richardson.
+      It is an independent reference aid citing the above source.</em>
     </div>
   </div>
   <div class="print-btn-row" id="print-btn-row" style="display:none;">
@@ -457,7 +475,7 @@ function buildQuestions() {
       <div class="q-num">Question ${q.n} &nbsp;·&nbsp; ${q.section}</div>
       <div class="q-text">${q.q}</div>
       ${q.hint ? `<div class="q-hint">${q.hint}</div>` : ''}
-      <textarea id="ans-${i}" placeholder="Answer in the name of your character…" rows="5"></textarea>
+      <textarea id="ans-${i}" placeholder="Answer in the name of your character…" rows="2"></textarea>
       <div class="nav-row">
         ${i > 0 ? `<button class="btn-secondary" onclick="goTo(${i-1})">← Back</button>` : '<span></span>'}
         ${i < TOTAL - 1
