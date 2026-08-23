@@ -93,7 +93,7 @@
       margin-bottom: .8rem;
       font-style: italic;
     }
-    input[type="text"] {
+    textarea, input[type="text"] {
       width: 100%;
       background: #fff;
       border: 1px solid #aaa;
@@ -104,10 +104,11 @@
       padding: .45rem .75rem;
       transition: border-color .2s;
     }
-    input[type="text"]:focus {
+    textarea:focus, input[type="text"]:focus {
       outline: none;
       border-color: #5a7a9a;
     }
+    textarea { resize: vertical; min-height: unset; }
 
     /* ── Navigation ── */
     .nav-row {
@@ -474,7 +475,7 @@ function buildQuestions() {
       <div class="q-num">Question ${q.n} &nbsp;·&nbsp; ${q.section}</div>
       <div class="q-text">${q.q}</div>
       ${q.hint ? `<div class="q-hint">${q.hint}</div>` : ''}
-      <input type="text" id="ans-${i}" placeholder="Answer in the name of your character…" />
+      <textarea id="ans-${i}" placeholder="Answer in the name of your character…" rows="2"></textarea>
       <div class="nav-row">
         ${i > 0 ? `<button class="btn-secondary" onclick="goTo(${i-1})">← Back</button>` : '<span></span>'}
         ${i < TOTAL - 1
