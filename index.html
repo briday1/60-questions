@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>60+ Questions — Character Creator</title>
+  <style>
+    /* ── Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Georgia', serif;
+      background: #1a1a2e;
+      color: #e0e0e0;
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    header {
+      background: linear-gradient(135deg, #16213e 0%, #0f3460 100%);
+      padding: 2rem 1.5rem 1.5rem;
+      text-align: center;
+      border-bottom: 3px solid #e94560;
+    }
+    header h1 {
+      font-size: 2.2rem;
+      color: #f5f5f5;
+      letter-spacing: 2px;
+    }
+    header p.subtitle {
+      margin-top: .5rem;
+      color: #a0a0c0;
+      font-size: .95rem;
+    }
+    header p.credit {
+      margin-top: .5rem;
+      font-size: .8rem;
+      color: #e9456088;
+    }
+
+    /* ── Progress bar ── */
+    #progress-wrap {
+      background: #0f3460;
+      padding: .6rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    #progress-bar-track {
+      flex: 1;
+      height: 8px;
+      background: #16213e;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    #progress-bar-fill {
+      height: 100%;
+      background: #e94560;
+      border-radius: 4px;
+      transition: width .3s ease;
+      width: 0%;
+    }
+    #progress-label { color: #a0a0c0; font-size: .85rem; white-space: nowrap; }
+
+    /* ── Main container ── */
+    main { max-width: 780px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+
+    /* ── Question card ── */
+    .q-card {
+      background: #16213e;
+      border: 1px solid #0f3460;
+      border-radius: 12px;
+      padding: 2rem 2.2rem;
+      display: none;
+    }
+    .q-card.active { display: block; }
+    .q-num {
+      font-size: .78rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #e94560;
+      margin-bottom: .4rem;
+    }
+    .q-text {
+      font-size: 1.25rem;
+      color: #f0f0f0;
+      margin-bottom: .5rem;
+      line-height: 1.4;
+    }
+    .q-hint {
+      font-size: .85rem;
+      color: #8080a0;
+      margin-bottom: 1.2rem;
+      font-style: italic;
+    }
+    textarea, input[type="text"] {
+      width: 100%;
+      background: #0f3460;
+      border: 1px solid #2a3a6e;
+      border-radius: 8px;
+      color: #e0e0f0;
+      font-family: inherit;
+      font-size: 1rem;
+      padding: .8rem 1rem;
+      resize: vertical;
+      transition: border-color .2s;
+    }
+    textarea:focus, input[type="text"]:focus {
+      outline: none;
+      border-color: #e94560;
+    }
+    textarea { min-height: 120px; }
+
+    /* ── Navigation ── */
+    .nav-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1.5rem;
+      gap: 1rem;
+    }
+    button {
+      cursor: pointer;
+      border: none;
+      border-radius: 8px;
+      padding: .7rem 1.8rem;
+      font-size: 1rem;
+      font-family: inherit;
+      transition: background .2s, transform .1s;
+    }
+    button:active { transform: scale(.97); }
+    .btn-primary { background: #e94560; color: #fff; }
+    .btn-primary:hover { background: #c73652; }
+    .btn-secondary { background: #0f3460; color: #a0a0c0; }
+    .btn-secondary:hover { background: #16213e; color: #e0e0e0; }
+    .btn-success { background: #27ae60; color: #fff; }
+    .btn-success:hover { background: #1e8449; }
+
+    /* ── Summary page ── */
+    #summary-page {
+      display: none;
+      background: #fff;
+      color: #111;
+      padding: 3rem 3.5rem;
+      border-radius: 12px;
+      margin-top: 2rem;
+    }
+    #summary-page h2 {
+      font-size: 2rem;
+      text-align: center;
+      border-bottom: 3px solid #e94560;
+      padding-bottom: .8rem;
+      margin-bottom: 1.5rem;
+      color: #1a1a2e;
+    }
+    #summary-page .meta {
+      text-align: center;
+      font-size: .85rem;
+      color: #555;
+      margin-bottom: 2rem;
+    }
+    .summary-section { margin-bottom: 2rem; }
+    .summary-section h3 {
+      font-size: 1rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #e94560;
+      border-bottom: 1px solid #e9456033;
+      padding-bottom: .3rem;
+      margin-bottom: 1rem;
+    }
+    .summary-row { margin-bottom: .8rem; }
+    .summary-row .sq { font-weight: bold; color: #333; font-size: .9rem; }
+    .summary-row .sa { color: #222; font-size: .95rem; white-space: pre-wrap; }
+    .summary-credit {
+      margin-top: 3rem;
+      padding-top: 1rem;
+      border-top: 1px solid #ccc;
+      font-size: .78rem;
+      color: #777;
+      text-align: center;
+      line-height: 1.7;
+    }
+    .print-btn-row {
+      text-align: center;
+      margin-top: 1.5rem;
+    }
+    @media print {
+      body { background: #fff; }
+      header, #progress-wrap, main > *:not(#summary-page), .print-btn-row { display: none !important; }
+      #summary-page { display: block !important; border-radius: 0; box-shadow: none; margin: 0; }
+    }
+
+    /* ── Intro screen ── */
+    #intro-page {
+      background: #16213e;
+      border: 1px solid #0f3460;
+      border-radius: 12px;
+      padding: 2.5rem;
+      text-align: center;
+    }
+    #intro-page h2 { color: #e94560; font-size: 1.8rem; margin-bottom: 1rem; }
+    #intro-page p { color: #c0c0d8; line-height: 1.7; margin-bottom: 1rem; }
+    #intro-page .name-row { margin: 1.5rem 0; text-align: left; }
+    #intro-page label { display: block; color: #a0a0c0; margin-bottom: .4rem; font-size: .9rem; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>60+ Questions</h1>
+  <p class="subtitle">A Busy Actor's Guide for Building Characters</p>
+  <p class="credit">Copyright © 2009 by Sy Richardson &nbsp;|&nbsp; Used for educational reference</p>
+</header>
+
+<div id="progress-wrap">
+  <div id="progress-bar-track"><div id="progress-bar-fill"></div></div>
+  <span id="progress-label">0 / 62</span>
+</div>
+
+<main>
+
+  <!-- Intro -->
+  <div id="intro-page">
+    <h2>Welcome, Actor</h2>
+    <p>
+      This tool walks you through Sy Richardson's <em>60+ Questions</em> — a proven method for
+      building rich, believable characters for stage, film, and television.
+    </p>
+    <p>
+      Answer every question <strong>in the name of the character</strong> you are creating.
+      Take as much time and space as you need. Honesty is the key.
+    </p>
+    <p style="font-style:italic; color:#8080a0;">
+      "These 60+ questions will help you know your character, probably better than the
+      producer, director, and in many cases, the writer too." — Sy Richardson
+    </p>
+    <div class="name-row">
+      <label for="char-name">Character Name (or working title)</label>
+      <input type="text" id="char-name" placeholder="e.g. John Doe / The Sheriff" />
+    </div>
+    <div class="name-row">
+      <label for="actor-name">Your Name (optional)</label>
+      <input type="text" id="actor-name" placeholder="Your name" />
+    </div>
+    <button class="btn-primary" onclick="startQuestions()" style="margin-top:.5rem; font-size:1.1rem; padding:.9rem 2.5rem;">
+      Begin Character Creation
+    </button>
+  </div>
+
+  <!-- Questions (generated by JS) -->
+  <div id="questions-container"></div>
+
+  <!-- Summary -->
+  <div id="summary-page">
+    <h2>Character Profile</h2>
+    <div class="meta" id="summary-meta"></div>
+    <div id="summary-body"></div>
+    <div class="summary-credit">
+      Character created using <em>60+ Questions — A Busy Actor's Guide for Building Characters</em><br/>
+      Copyright © 2009 by Sy Richardson &nbsp;|&nbsp; Copyright © 1989 by Sy Richardson<br/>
+      Feed My Sheep Publishing &nbsp;|&nbsp; <a href="http://www.syrichardson.com">www.syrichardson.com</a>
+    </div>
+  </div>
+  <div class="print-btn-row" id="print-btn-row" style="display:none;">
+    <button class="btn-success" onclick="window.print()">🖨 Save / Print as PDF</button>
+    <button class="btn-secondary" onclick="restartApp()" style="margin-left:1rem;">Start Over</button>
+  </div>
+
+</main>
+
+<script>
+// ─────────────────────────────────────────────
+// Question data
+// ─────────────────────────────────────────────
+const SECTIONS = [
+  {
+    title: "Birth & Background",
+    questions: [
+      { n: 2,  q: "What type of birth did you have?", hint: "Easy, hard, natural, home, cesarean, hospital." },
+      { n: 3,  q: "What year were you born?", hint: "Time, place, astrological sign and horoscope?" },
+    ]
+  },
+  {
+    title: "Personality & Humor",
+    questions: [
+      { n: 4,  q: "What type of humor makes you laugh?", hint: "Intellectual, sick, sadistic, broad, clownish, ethnic, or sexual. Think of two jokes to tell a friend." },
+      { n: 5,  q: "What makes you cry?", hint: "Births, funerals, weddings, rejections, laughter or happiness." },
+    ]
+  },
+  {
+    title: "Life & Work",
+    questions: [
+      { n: 6,  q: "How do you make a living?", hint: "Blue-collar, white collar, entertainer, high tech, professional or criminal." },
+      { n: 7,  q: "How do you feel about your Mother?", hint: "Love, respect, fear, uncertain, or an Oedipus complex." },
+      { n: 8,  q: "How do you feel about your Father?", hint: "Love, respect, fear, don't know him or uncertain." },
+    ]
+  },
+  {
+    title: "Sports & Entertainment",
+    questions: [
+      { n: 9,  q: "What is your favorite spectator sport?", hint: "Football, boxing, tennis, golf, swimming, soccer, bowling, etc." },
+      { n: 10, q: "What is your favorite participation sport?", hint: "Football, boxing, tennis, golf, swimming, bowling, or Wii, etc." },
+      { n: 11, q: "What is your favorite TV program?", hint: "News, reality, episodic, game show, sitcom, talk show or movies." },
+      { n: 12, q: "What is your favorite movie?", hint: "e.g. Doubt, Avatar, 007, Clueless, True Grit, Repoman, Colors, Straight to Hell..." },
+    ]
+  },
+  {
+    title: "Relationships & Beliefs",
+    questions: [
+      { n: 13, q: "Are you still a virgin?", hint: "If not, who, where, when and at what age." },
+      { n: 14, q: "What makes you the angriest?", hint: "Disrespect, irresponsibility, vulgarity, or stupidity." },
+      { n: 15, q: "What is your dominant, prejudice attitude?", hint: "Color, creed, size, sexual preferences, race, religion, or politics." },
+      { n: 16, q: "What is your favorite color?", hint: "Red, white, blue, orange, brown, cyan, fuchsia, etc." },
+      { n: 17, q: "What are your political affiliations?", hint: "Democrat, republican, independent, or other." },
+      { n: 18, q: "Do you gamble?", hint: "Often, never, sometimes." },
+    ]
+  },
+  {
+    title: "Family",
+    questions: [
+      { n: 19, q: "Do you have children?", hint: "Boys or Girls." },
+      { n: 20, q: "What kind of parent are you?", hint: "Married, single parent, absentee parent, dead-beat dad, or babies' daddy." },
+      { n: 21, q: "Do you like children?", hint: "You tolerate them, you can't stand them, you never thought about it." },
+    ]
+  },
+  {
+    title: "Faith & Major Life Events",
+    questions: [
+      { n: 22, q: "What are your religious beliefs?", hint: "Catholic, Presbyterian, Jewish, Jehovah Witness, Islam, Hindi, etc." },
+      { n: 23, q: "What is the most exciting thing that ever happened to you?", hint: "Use your sense memory." },
+      { n: 24, q: "What is the most traumatic thing that ever happened to you?", hint: "" },
+    ]
+  },
+  {
+    title: "Living & Health",
+    questions: [
+      { n: 25, q: "What type of dwelling do you live in?", hint: "Apartment, house, tent, vehicle, boathouse, streets, condo. Describe your dwelling in detail." },
+      { n: 26, q: "Have you ever had any diseases?", hint: "Polio, cancer, hepatitis B, HIV, diabetes, heart attack." },
+    ]
+  },
+  {
+    title: "Love & Dreams",
+    questions: [
+      { n: 27, q: "Have you ever been in love?", hint: "Who, when, where and how old were you?" },
+      { n: 28, q: "What is your favorite city?", hint: "New York, London, Chicago, Los Angeles, etc." },
+      { n: 29, q: "If you were master of the Universe what would you alter?", hint: "" },
+      { n: 30, q: "Describe your most recent dream.", hint: "" },
+    ]
+  },
+  {
+    title: "Vices",
+    questions: [
+      { n: 31, q: "Do you drink alcohol?", hint: "Beer, wine, whiskey. Be precise." },
+      { n: 32, q: "Do you smoke?", hint: "Moderately, chain. Be precise." },
+      { n: 33, q: "Do you now take, or have you ever taken drugs?", hint: "LSD, marijuana, peyote, cocaine, hash, crack. If so, what is your opinion about each drug you have taken, and about drugs in general?" },
+    ]
+  },
+  {
+    title: "Failures & Successes",
+    questions: [
+      { n: 34, q: "List three of your failures.", hint: "Marriage, career, college, weight, etc." },
+      { n: 35, q: "List three of your successes.", hint: "Marriage, career, college, weight, etc." },
+      { n: 36, q: "What is your goal in life?", hint: "" },
+      { n: 37, q: "Do you have a purpose?", hint: "" },
+    ]
+  },
+  {
+    title: "Relationships with Others",
+    questions: [
+      { n: 38, q: "How do you feel about each and every person you are in contact with?", hint: "These are still questions regarding the character you are building." },
+    ]
+  },
+  {
+    title: "Physical & Internal Attributes",
+    questions: [
+      { n: 39, q: "What is your strongest physical attribute?", hint: "Face, body, abs, muscles, eyes, legs, breast." },
+      { n: 40, q: "What is the one thing about your body you like the least?", hint: "Nose, lips, feet, breasts, buttocks, teeth, hair." },
+      { n: 41, q: "What is your strongest internal attribute?", hint: "Honesty, perseverance, ambition, spiritualism, patience, loyalty." },
+      { n: 42, q: "What is your weakest personality trait?", hint: "Laziness, self-indulgence, perfection, anger, jealousy, loyalty." },
+    ]
+  },
+  {
+    title: "Character Music & Role Model",
+    questions: [
+      { n: 43, q: "Select a piece of music that suits you.", hint: "Describe the music or song. Hum it in your mind while on the set, in the scene, while walking, sitting." },
+      { n: 44, q: "If you had to change places with anyone, living or dead, male or female, who would it be?", hint: "e.g. Billy Graham, Madonna, Dr. Phil, Jackie Kennedy, Moses, Oprah, Mandela, Michael Jackson, Bill Gates..." },
+    ]
+  },
+  {
+    title: "Behavior & Body Language",
+    questions: [
+      { n: 45, q: "Are you an aggressive or passive person?", hint: "" },
+      { n: 46, q: "What is the body language of the character?", hint: "Stumbling, straight forward, erect, stooped, stiff." },
+      { n: 47, q: "What is your most effective method of getting your way?", hint: "" },
+    ]
+  },
+  {
+    title: "Tastes & Lifestyle",
+    questions: [
+      { n: 48, q: "List three of your favorite foods.", hint: "" },
+      { n: 49, q: "How would you describe your sex life?", hint: "Traumatic, exciting, boring, fantastic." },
+      { n: 50, q: "What newspapers do you read?", hint: "New York Times, Los Angeles Times, Chicago Tribune, Aurora Sun." },
+      { n: 51, q: "Do you read online or hard copy?", hint: "" },
+      { n: 52, q: "What was the last book you read?", hint: "" },
+      { n: 53, q: "Who is your favorite actor or actress?", hint: "" },
+      { n: 54, q: "If you could be changed into a mammal, bird, or fish, what would you choose?", hint: "" },
+      { n: 55, q: "What temperature do you like best?", hint: "Cold, hot, humid, dry, wet." },
+      { n: 56, q: "How do you like to dress?", hint: "Baggy, black tie, western, dress, pants, suits, skirts, gown, shorts." },
+    ]
+  },
+  {
+    title: "Social & Emotional",
+    questions: [
+      { n: 57, q: "How do you hide your feelings?", hint: "" },
+      { n: 58, q: "How do you get along with the opposite sex?", hint: "" },
+      { n: 59, q: "How do you get along with the same sex?", hint: "" },
+      { n: 60, q: "Have you ever been with a person sexually of your own sex?", hint: "Be specific." },
+    ]
+  },
+  {
+    title: "+Plus+ (Beyond the 60)",
+    questions: [
+      { n: 61, q: "Have you ever had a near death experience?", hint: "Describe." },
+      { n: 62, q: "Describe how you will die.", hint: "" },
+      { n: 63, q: "Who do you think will suffer the most because of your death?", hint: "" },
+    ]
+  },
+  {
+    title: "Character Reflection",
+    questions: [
+      { n: "A", q: "Find something positive about your character, even if he or she is a serial killer.", hint: "" },
+    ]
+  },
+];
+
+// Flatten all questions into a sequential list
+const ALL_QUESTIONS = [];
+SECTIONS.forEach(sec => {
+  sec.questions.forEach(q => ALL_QUESTIONS.push({ ...q, section: sec.title }));
+});
+
+const TOTAL = ALL_QUESTIONS.length;
+let currentIndex = 0;
+const answers = {};
+
+// ─────────────────────────────────────────────
+// Build DOM
+// ─────────────────────────────────────────────
+function buildQuestions() {
+  const container = document.getElementById('questions-container');
+  ALL_QUESTIONS.forEach((q, i) => {
+    const card = document.createElement('div');
+    card.className = 'q-card';
+    card.id = `card-${i}`;
+    card.innerHTML = `
+      <div class="q-num">Question ${q.n} &nbsp;·&nbsp; ${q.section}</div>
+      <div class="q-text">${q.q}</div>
+      ${q.hint ? `<div class="q-hint">${q.hint}</div>` : ''}
+      <textarea id="ans-${i}" placeholder="Answer in the name of your character…" rows="5"></textarea>
+      <div class="nav-row">
+        ${i > 0 ? `<button class="btn-secondary" onclick="goTo(${i-1})">← Back</button>` : '<span></span>'}
+        ${i < TOTAL - 1
+          ? `<button class="btn-primary" onclick="goTo(${i+1})">Next →</button>`
+          : `<button class="btn-success" onclick="showSummary()">Finish & See Summary ✓</button>`}
+      </div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function goTo(index) {
+  // Save current answer
+  const cur = document.getElementById(`ans-${currentIndex}`);
+  if (cur) answers[currentIndex] = cur.value;
+
+  document.getElementById(`card-${currentIndex}`).classList.remove('active');
+  currentIndex = index;
+  document.getElementById(`card-${currentIndex}`).classList.add('active');
+
+  // Restore saved answer
+  const next = document.getElementById(`ans-${currentIndex}`);
+  if (next && answers[currentIndex] !== undefined) next.value = answers[currentIndex];
+
+  updateProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateProgress() {
+  const pct = Math.round((currentIndex / TOTAL) * 100);
+  document.getElementById('progress-bar-fill').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = `${currentIndex} / ${TOTAL}`;
+}
+
+// ─────────────────────────────────────────────
+// App flow
+// ─────────────────────────────────────────────
+function startQuestions() {
+  document.getElementById('intro-page').style.display = 'none';
+  document.getElementById('questions-container').style.display = 'block';
+  document.getElementById(`card-0`).classList.add('active');
+  updateProgress();
+}
+
+function showSummary() {
+  // Save last answer
+  const cur = document.getElementById(`ans-${currentIndex}`);
+  if (cur) answers[currentIndex] = cur.value;
+
+  // Hide questions
+  document.getElementById('questions-container').style.display = 'none';
+
+  const charName = document.getElementById('char-name').value.trim() || 'Unnamed Character';
+  const actorName = document.getElementById('actor-name').value.trim();
+  const now = new Date().toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
+
+  document.getElementById('summary-meta').innerHTML =
+    `<strong>${charName}</strong>${actorName ? ` &nbsp;·&nbsp; Actor: ${actorName}` : ''} &nbsp;·&nbsp; ${now}`;
+
+  // Group by section
+  const sections = {};
+  ALL_QUESTIONS.forEach((q, i) => {
+    if (!sections[q.section]) sections[q.section] = [];
+    sections[q.section].push({ q, answer: answers[i] || '—' });
+  });
+
+  let html = '';
+  for (const [sec, items] of Object.entries(sections)) {
+    html += `<div class="summary-section"><h3>${sec}</h3>`;
+    items.forEach(({ q, answer }) => {
+      html += `<div class="summary-row">
+        <div class="sq">${q.n}. ${q.q}</div>
+        <div class="sa">${escapeHtml(answer)}</div>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+
+  document.getElementById('summary-body').innerHTML = html;
+
+  const summaryPage = document.getElementById('summary-page');
+  summaryPage.style.display = 'block';
+  document.getElementById('print-btn-row').style.display = 'block';
+  document.getElementById('progress-wrap').style.display = 'none';
+
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function restartApp() {
+  if (!confirm('Start over? All answers will be cleared.')) return;
+  location.reload();
+}
+
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+// ─────────────────────────────────────────────
+// Init
+// ─────────────────────────────────────────────
+buildQuestions();
+document.getElementById('questions-container').style.display = 'none';
+</script>
+</body>
+</html>
