@@ -413,11 +413,11 @@ function focusQuestion(index) {
   const textarea = document.getElementById(`ans-${index}`);
   if (!textarea) return;
 
-  requestAnimationFrame(() => {
+  setTimeout(() => {
     textarea.focus();
     const end = textarea.value.length;
     textarea.setSelectionRange(end, end);
-  });
+  }, 0);
 }
 
 function goTo(index) {
