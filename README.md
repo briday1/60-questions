@@ -9,7 +9,7 @@ An interactive web app based on **Sy Richardson's** *60+ Questions — A Busy Ac
 This single-page web app guides actors through Sy Richardson's famous character-development questionnaire. Answer all 60+ questions in the name of your character, then generate a cleanly formatted summary that can be saved or printed as a PDF.
 
 Features:
-- Progress bar through all 64 prompts (Q1–63 + reflection, skipping "Are you ready?")
+- Progress bar through all 64 prompts, starting with the character name as Question 1
 - Questions grouped into meaningful sections (Birth & Background, Personality, Family, Vices, etc.)
 - Printable/PDF-saveable character profile summary
 
